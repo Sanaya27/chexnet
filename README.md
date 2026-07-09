@@ -6,7 +6,7 @@ The distribution features streamlined data compilation mechanisms, automated val
 
 ---
 
-## 🛠️ Framework Modernization & Architecture Patches
+## Framework Modernization & Architecture Patches
 To stabilize execution on contemporary cloud compute hardware, multiple legacy codebase dependencies were refactored. The following critical system blocks were completely patched inside this workspace:
 
 1. **Dynamic Key Matching:** Upgraded legacy checkpoint layer naming strings (`norm1`, `conv1`) to seamlessly map to modern `torchvision` DenseNet module keys (`norm.1`, `conv.1`) at runtime using an automated regex dictionary re-mapper.
@@ -16,7 +16,7 @@ To stabilize execution on contemporary cloud compute hardware, multiple legacy c
 
 ---
 
-## 📊 Dataset & Rigid Sampling Strategy
+## Dataset & Rigid Sampling Strategy
 Model training and verification utilize the official **NIH ChestX-ray14 dataset** containing 112,120 frontal chest radiographs. To ensure strict scientific validity under rigorous computational constraints, data structures are isolated as follows:
 
 * **Train Split:** A patient-disjoint, stratified sample of 10,000 high-resolution images (Random Seed = 42). 
@@ -25,7 +25,7 @@ Model training and verification utilize the official **NIH ChestX-ray14 dataset*
 
 ---
 
-## 📈 Optimization Performance & Findings
+## Optimization Performance & Findings
 Our core optimization contribution explores switching standard Binary Cross Entropy (BCE) to an inverse-frequency balanced objective. This design counters acute representation disparities, matching rare findings like Hernia with massive scaling parameters ($\approx 575\times$) against dominant common classes like Infiltration ($\approx 5.3\times$).
 
 ### Empirical Metrics Summary
@@ -44,7 +44,7 @@ Full category-by-category breakdowns can be inspected inside the local spreadshe
 
 ---
 
-## 🔍 Visual Interpretability via Tensor-Hooked Grad-CAM
+## Visual Interpretability via Tensor-Hooked Grad-CAM
 The visual activation grids validate our quantitative results. The standard unweighted baseline model exhibits acute attention fragmentation, misallocating significant feature focus to non-relevant skeletal boundaries (such as the humeral heads/shoulders, spinal columns, and upper abdominal structures). 
 
 Our weighted configuration successfully shifts focus away from background artifacts and maps directly onto real pulmonary tissue fields. The visual broadening of the heat maps perfectly displays the network's increased sensitivity.
