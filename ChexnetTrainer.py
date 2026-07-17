@@ -73,7 +73,24 @@ class ChexnetTrainer ():
         scheduler = ReduceLROnPlateau(optimizer, factor = 0.1, patience = 5, mode = 'min')
 
         #-------------------- SETTINGS: LOSS
-        if pos_weight_tensor is not None:
+        lossType = globals().get('LOSS_TYPE', 'raw')  # 'raw', 'sqrt', or 'focal'
+        print(f">>> ACTUALLY USING LOSS TYPE: {lossType}")
+        
+        if lossType == 'focal':
+            class FocalLoss(torch.nn.Module):
+                def __init__(self, alpha=1, gamma=2):
+                    super().__init__()
+                    self.alpha = alpha
+                    self.gamma = gamma
+                def forward(self, inputs, targets):
+                    bce_loss = torch.nn.functional.binary_cross_entropy_with_logits(inputs, targets, reduction='none')
+                    pt = torch.exp(-bce_loss)
+                    focal_loss = self.alpha * (1 - pt) ** self.gamma * bce_loss
+                    return focal_loss.mean()
+            loss = FocalLoss(alpha=1, gamma=2).cuda()
+        elif lossType == 'sqrt' and pos_weight_tensor is not None:
+            loss = torch.nn.BCEWithLogitsLoss(pos_weight=torch.sqrt(pos_weight_tensor).cuda())
+        elif pos_weight_tensor is not None:
             loss = torch.nn.BCEWithLogitsLoss(pos_weight=pos_weight_tensor.cuda())
         else:
             loss = torch.nn.BCEWithLogitsLoss()
