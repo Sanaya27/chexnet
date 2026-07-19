@@ -9,8 +9,8 @@ from ChexnetTrainer import ChexnetTrainer
 
 def main ():
     
-    #runTest()
-    runTrain()
+    runTest()
+    #runTrain()
   
 #--------------------------------------------------------------------------------   
 
@@ -76,7 +76,7 @@ def runTest():
     imgtransResize = 256
     imgtransCrop = 224
     
-    pathModel = './m-04072026-172922.pth.tar'
+    pathModel = './checkpoints/focal_loss_best_epoch8.pth.tar'
     
     timestampLaunch = ''
     

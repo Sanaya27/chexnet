@@ -1,0 +1,24 @@
+CheXNet Final Test Results
+
+Checkpoint:
+checkpoints/focal_loss_best_epoch8.pth.tar
+
+Mean AUROC:
+0.6783590181448327
+
+Per-class AUROC
+
+Atelectasis: 0.6595827350786225
+Cardiomegaly: 0.7170088762263218
+Effusion: 0.733022941518112
+Infiltration: 0.6440064998962769
+Mass: 0.6103920726577248
+Nodule: 0.6224896312932044
+Pneumonia: 0.5420001647748144
+Pneumothorax: 0.7170568152782028
+Consolidation: 0.6629347942305958
+Edema: 0.731802893647975
+Emphysema: 0.639490621590149
+Fibrosis: 0.7413692144428958
+Pleural_Thickening: 0.6842227625484981
+Hernia: 0.7916462308442653
