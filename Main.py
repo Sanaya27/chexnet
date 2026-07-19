@@ -9,8 +9,8 @@ from ChexnetTrainer import ChexnetTrainer
 
 def main ():
     
-    runTest()
-    #runTrain()
+    #runTest()
+    runTrain()
   
 #--------------------------------------------------------------------------------   
 
@@ -46,19 +46,22 @@ def runTrain():
     
     #---- Training settings: batch size, maximum number of epochs
     trBatchSize = 8
-    trMaxEpoch = 3
+    trMaxEpoch = 8
     
     #---- Parameters related to image transforms: size of the down-scaled image, cropped image
     imgtransResize = 256
     imgtransCrop = 224
         
-    pathModel = 'm-' + timestampLaunch + '.pth.tar'
+    checkpointPath = './checkpoints/focal_epoch2_checkpoint.pth.tar'
+    pathModel = './checkpoints/focal_loss_best_epoch8.pth.tar'
     
     print ('Training NN architecture = ', nnArchitecture)
-    ChexnetTrainer.train(pathDirData, pathFileTrain, pathFileVal, nnArchitecture, nnIsTrained, nnClassCount, trBatchSize, trMaxEpoch, imgtransResize, imgtransCrop, timestampLaunch, None, pos_weight_tensor)
+    print ('Resuming from checkpoint = ', checkpointPath)
+    print ('Best checkpoint will be saved to = ', pathModel)
+    ChexnetTrainer.train(pathDirData, pathFileTrain, pathFileVal, nnArchitecture, nnIsTrained, nnClassCount, trBatchSize, trMaxEpoch, imgtransResize, imgtransCrop, timestampLaunch, checkpointPath, pos_weight_tensor)
     
-    print ('Testing the trained model')
-    ChexnetTrainer.test(pathDirData, pathFileTest, pathModel, nnArchitecture, nnClassCount, nnIsTrained, trBatchSize, imgtransResize, imgtransCrop, timestampLaunch)
+    print ('Training finished.')
+    print ('Checkpoint must be pushed to GitHub before testing.')
 
 #-------------------------------------------------------------------------------- 
 

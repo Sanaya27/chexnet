@@ -73,7 +73,7 @@ class ChexnetTrainer ():
         scheduler = ReduceLROnPlateau(optimizer, factor = 0.1, patience = 5, mode = 'min')
 
         #-------------------- SETTINGS: LOSS
-        lossType = globals().get('LOSS_TYPE', 'raw')  # 'raw', 'sqrt', or 'focal'
+        lossType = 'focal'  # explicitly use focal loss for this experiment
         print(f">>> ACTUALLY USING LOSS TYPE: {lossType}")
         
         if lossType == 'focal':
@@ -95,27 +95,39 @@ class ChexnetTrainer ():
         else:
             loss = torch.nn.BCEWithLogitsLoss()
 
-        #---- Load checkpoint 
-        if checkpoint != None:
-            modelCheckpoint = torch.load(checkpoint)
+        #---- Load checkpoint
+        startEpoch = 0
+        lossMIN = 100000
+
+        if checkpoint is not None:
+            modelCheckpoint = torch.load(checkpoint, map_location='cuda')
+
             pattern = re.compile(
                 r'^(.*denselayer\d+\.(?:norm|relu|conv))\.((?:[12])\.(?:weight|bias|running_mean|running_var))$')
+
             state_dict = modelCheckpoint['state_dict']
+
             for key in list(state_dict.keys()):
                 res = pattern.match(key)
                 if res:
                     new_key = res.group(1) + res.group(2)
                     state_dict[new_key] = state_dict[key]
                     del state_dict[key]
+
             model.load_state_dict(state_dict)
             optimizer.load_state_dict(modelCheckpoint['optimizer'])
 
+            startEpoch = modelCheckpoint.get('epoch', 0)
+            lossMIN = modelCheckpoint.get('best_loss', 100000)
+
+            print('Checkpoint loaded successfully')
+            print('Completed epochs:', startEpoch)
+            print('Best validation loss:', lossMIN)
+            print('Resuming from epoch:', startEpoch + 1)
 
         #---- TRAIN THE NETWORK
 
-        lossMIN = 100000
-
-        for epochID in range (0, trMaxEpoch):
+        for epochID in range(startEpoch, trMaxEpoch):
 
             timestampTime = time.strftime("%H%M%S")
             timestampDate = time.strftime("%d%m%Y")
@@ -132,7 +144,7 @@ class ChexnetTrainer ():
 
             if lossVal < lossMIN:
                 lossMIN = lossVal    
-                torch.save({'epoch': epochID + 1, 'state_dict': model.state_dict(), 'best_loss': lossMIN, 'optimizer' : optimizer.state_dict()}, 'm-' + launchTimestamp + '.pth.tar')
+                torch.save({'epoch': epochID + 1, 'state_dict': model.state_dict(), 'best_loss': lossMIN, 'optimizer' : optimizer.state_dict()}, './checkpoints/focal_loss_best_epoch8.pth.tar')
                 print ('Epoch [' + str(epochID + 1) + '] [save] [' + timestampEND + '] loss= ' + str(lossVal))
             else:
                 print ('Epoch [' + str(epochID + 1) + '] [----] [' + timestampEND + '] loss= ' + str(lossVal))
