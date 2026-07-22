@@ -15,7 +15,12 @@ from torch.utils.data import DataLoader
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 import torch.nn.functional as func
 
-from sklearn.metrics import roc_auc_score
+from sklearn.metrics import (
+    roc_auc_score,
+    precision_score,
+    recall_score,
+    f1_score
+)
 
 from DensenetModels import DenseNet121
 from DensenetModels import DenseNet169
