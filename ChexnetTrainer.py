@@ -334,6 +334,9 @@ class ChexnetTrainer ():
         f1 = f1_score(gt, pred_binary, average='macro', zero_division=0)
 
         print ('AUROC mean ', aurocMean)
+        print('Macro Precision:', precision)
+        print('Macro Recall   :', recall)
+        print('Macro F1 Score :', f1)
 
         for i in range (0, len(aurocIndividual)):
             print (CLASS_NAMES[i], ' ', aurocIndividual[i])
