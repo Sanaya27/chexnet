@@ -319,6 +319,20 @@ class ChexnetTrainer ():
         aurocIndividual = ChexnetTrainer.computeAUROC(outGT, outPRED, nnClassCount)
         aurocMean = np.array(aurocIndividual).mean()
 
+        # Convert logits to probabilities
+        pred_probs = torch.sigmoid(outPRED).cpu().numpy()
+
+        # Convert probabilities to binary predictions
+        pred_binary = (pred_probs >= 0.5).astype(int)
+
+        # Ground truth
+        gt = outGT.cpu().numpy()
+
+        # Macro metrics
+        precision = precision_score(gt, pred_binary, average='macro', zero_division=0)
+        recall = recall_score(gt, pred_binary, average='macro', zero_division=0)
+        f1 = f1_score(gt, pred_binary, average='macro', zero_division=0)
+
         print ('AUROC mean ', aurocMean)
 
         for i in range (0, len(aurocIndividual)):
