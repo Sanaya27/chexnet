@@ -83,8 +83,23 @@ def runTest():
     
     timestampLaunch = ''
     
-    ChexnetTrainer.test(pathDirData, pathFileTest, pathModel, nnArchitecture, nnClassCount, nnIsTrained, trBatchSize, imgtransResize, imgtransCrop, timestampLaunch)
+    for pathModel in models:
+    print("\n" + "=" * 60)
+    print("Evaluating:", pathModel)
+    print("=" * 60)
 
+    ChexnetTrainer.test(
+        pathDirData,
+        pathFileTest,
+        pathModel,
+        nnArchitecture,
+        nnClassCount,
+        nnIsTrained,
+        trBatchSize,
+        imgtransResize,
+        imgtransCrop,
+        timestampLaunch
+    )
 #-------------------------------------------------------------------------------- 
 
 if __name__ == '__main__':
