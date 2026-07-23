@@ -66,7 +66,7 @@ def runTrain():
 #-------------------------------------------------------------------------------- 
 
 def runTest():
-    
+
     pathDirData = '/kaggle/working/all_images'
     pathFileTest = './dataset/test_official.txt'
     nnArchitecture = 'DENSE-NET-121'
@@ -75,31 +75,32 @@ def runTest():
     trBatchSize = 2
     imgtransResize = 256
     imgtransCrop = 224
-    
-    models = [
-    './checkpoints/focal_loss_best_epoch8.pth.tar',
-    './checkpoints/sqrt_weighted_bce_best.pth.tar'
-]
-    
-    timestampLaunch = ''
-    
-    for pathModel in models:
-    print("\n" + "=" * 60)
-    print("Evaluating:", pathModel)
-    print("=" * 60)
 
-    ChexnetTrainer.test(
-        pathDirData,
-        pathFileTest,
-        pathModel,
-        nnArchitecture,
-        nnClassCount,
-        nnIsTrained,
-        trBatchSize,
-        imgtransResize,
-        imgtransCrop,
-        timestampLaunch
-    )
+    models = [
+        './checkpoints/focal_loss_best_epoch8.pth.tar',
+        './checkpoints/sqrt_weighted_bce_best.pth.tar'
+    ]
+
+    timestampLaunch = ''
+
+    for pathModel in models:
+        print("\n" + "=" * 60)
+        print("Evaluating:", pathModel)
+        print("=" * 60)
+
+        ChexnetTrainer.test(
+            pathDirData,
+            pathFileTest,
+            pathModel,
+            nnArchitecture,
+            nnClassCount,
+            nnIsTrained,
+            trBatchSize,
+            imgtransResize,
+            imgtransCrop,
+            timestampLaunch
+        )
+    
 #-------------------------------------------------------------------------------- 
 
 if __name__ == '__main__':
