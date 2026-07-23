@@ -76,7 +76,10 @@ def runTest():
     imgtransResize = 256
     imgtransCrop = 224
     
-    pathModel = './checkpoints/focal_loss_best_epoch8.pth.tar'
+    models = [
+    './checkpoints/focal_loss_best_epoch8.pth.tar',
+    './checkpoints/sqrt_weighted_bce_best.pth.tar'
+]
     
     timestampLaunch = ''
     
