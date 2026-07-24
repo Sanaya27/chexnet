@@ -289,7 +289,7 @@ class ChexnetTrainer ():
         print('Building dataset...')
         datasetTest = DatasetGenerator(pathImageDirectory=pathDirData, pathDatasetFile=pathFileTest, transform=transformSequence)
         print('Dataset built, size:', len(datasetTest))
-        dataLoaderTest = DataLoader(dataset=datasetTest, batch_size=trBatchSize, num_workers=8, shuffle=False, pin_memory=True)
+        dataLoaderTest = DataLoader(dataset=datasetTest, batch_size=trBatchSize, num_workers=4, shuffle=False, pin_memory=True)
         print('DataLoader ready. Starting test loop...')
 
         outGT_list = []
